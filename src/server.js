@@ -4,8 +4,16 @@ import express from "express";
 const port=4000;
 const app= express();
 
-//req.method:어떤  method 가 어느  url로 향하는지 알 수있음 
+/*✔middlewares? 
+결론적으로는 middlewares==controller인데 handle과의 차이는  next()의 유무 
+handle은  response로 받아주고 끝나는데,middlewares는  request와  response사이에서 
+도움을주므로
+👉middleware는 request와 response 사이에서 역할을해준다 
+👉middleware는 req와  res에 next() function을통해 접근이 가능하다 
+*/
+
 const logger= (req, res, next)=> {
+    //req.method:어떤  method 가 어느  url로 향하는지 알 수있음 
     console.log(`${req.method}${req.url}`);
     next();}
 
