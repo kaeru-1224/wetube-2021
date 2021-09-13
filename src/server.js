@@ -1,7 +1,10 @@
 import express from "express";
-
+import videoRouter from "./routers/videoRouters";
+import userRouter from"./routers/userRouters";
+import globalRouter from "./routers/globalRouter"
 //1.Make express application!
-const port=4000;
+const port=4001;
+console.log(process.cwd());
 const app= express();
 
 /*✔middlewares? 
@@ -12,19 +15,7 @@ handle은  response로 받아주고 끝나는데,middlewares는  request와  res
 👉middleware는 req와  res에 next() function을통해 접근이 가능하다 
 */
 
-const logger= (req, res, next)=> {
-    //req.method:어떤  method 가 어느  url로 향하는지 알 수있음 
-    console.log(`${req.method}${req.url}`);
-    next();}
 
-const privateMiddleware=(req,res,next)=>{
-    const url = req.url;
-    if(url==="/protected"){
-        return res.send("<h1> Not Allowed</h1>")
-    }console.log("Allowed you may countinue");
-    next();
-
-}
 //2. get request
 //1)누군가가 /(=root page)로 get request를 보내게되는경우 콜백 함수가 작동됨
 //브라우저가  get request를 보내고 있어서,  getrequest에 우리가 반응할때까지 로딩되는것
@@ -32,20 +23,6 @@ const privateMiddleware=(req,res,next)=>{
 //request를 받을경우 우리는 response를 return해줘야함
 //그런데 여기서 우리는 res.end()를 return해주면서  request를 종료시켜줌
 
-const handelHome=(req,res)=>{/*return res.end()*/ return res.send("I love middle");}
-
-const handelProtected =(req,res)=>{
-    return res.send("Welcome to private lounge")
-    
-}
-
-app.use(logger);
-app.use(privateMiddleware);
-app.get("/",handelHome)
-app.get("/protected",handelProtected)
-
-const handelLogin=(req,res)=>{return res.send("Login here"); };
-app.get("/login",handelLogin)
 
 
 
@@ -54,5 +31,11 @@ app.get("/login",handelLogin)
 const handelListenig=()=> console.log(`✨ Server listenting on port http://localhost:${port} 💚`);
 //listen: 서버 가 시작될때 listen내의 콜백함수가 작동함
 //port번호,콜백함수
-app.listen(port,handelListenig);
 
+app.set("view engine","pug")
+app.set("views",process.cwd()+"/src/views")
+app.listen(port,handelListenig);
+app.use(express.urlencoded({extended:true}));
+app.use("/",globalRouter)
+app.use("/user",userRouter)
+app.use("/video",videoRouter )

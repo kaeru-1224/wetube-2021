@@ -1,0 +1,15 @@
+extends layout.pug
+include mixin/video
+
+block content
+    header 
+        nav
+            ul 
+               li 
+                 a(href="video/upload") Upload Video
+                 
+    h2  Welcome here yoyu will see trending videos 
+        each videoitem in videos
+            +video(videoitem)
+        else
+            h1 Sorry nothing found

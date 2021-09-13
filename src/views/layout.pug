@@ -1,0 +1,13 @@
+//기존의  html양식이 반복되기 때문에 layout을 만들어 상속해주는 방식으로 이용
+doctype html 
+html(lang="ko")
+    head 
+        title #{pageTitle} | Wetube
+        link(rel="stylesheet" href="https://unpkg.com/mvp.css")
+    body
+        header
+            h1=pageTitle
+
+        main
+            block content
+    include partials/footer.pug
